@@ -1,0 +1,48 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 541edeb8f49034e47965f8c3101b8218, type: 3}
+  m_Name: UpgradeDB
+  m_EditorClassIdentifier: 
+  mainData:
+    icon: {fileID: -6245737239945712184, guid: 49b9dfaaa1b489f40b64b5b04be1fbaf, type: 3}
+    Name: Touch Upgrade
+  assistDataList:
+  - icon: {fileID: 4138223980208024357, guid: 2842f8d1a8c95d64ba97d94371c7d951, type: 3}
+    Name: Drum
+    gradeDataList:
+    - needLevel: 4
+      increaseUpgradeCost: 2
+    - needLevel: 8
+      increaseUpgradeCost: 3
+  - icon: {fileID: -8562809411437085166, guid: ba9d7776884432b40809054448e8ac7b, type: 3}
+    Name: Bass
+    gradeDataList: []
+  - icon: {fileID: 4138223980208024357, guid: 2842f8d1a8c95d64ba97d94371c7d951, type: 3}
+    Name: Guitar
+    gradeDataList: []
+  - icon: {fileID: -8562809411437085166, guid: ba9d7776884432b40809054448e8ac7b, type: 3}
+    Name: Guitar2
+    gradeDataList: []
+  - icon: {fileID: 4138223980208024357, guid: 2842f8d1a8c95d64ba97d94371c7d951, type: 3}
+    Name: Piano
+    gradeDataList:
+    - needLevel: 1
+      increaseUpgradeCost: 10
+  - icon: {fileID: 4138223980208024357, guid: 2842f8d1a8c95d64ba97d94371c7d951, type: 3}
+    Name: Choir
+    gradeDataList: []
+  - icon: {fileID: 4138223980208024357, guid: 2842f8d1a8c95d64ba97d94371c7d951, type: 3}
+    Name: Flute
+    gradeDataList: []
+  - icon: {fileID: 4138223980208024357, guid: 2842f8d1a8c95d64ba97d94371c7d951, type: 3}
+    Name: Keyboard
+    gradeDataList: []

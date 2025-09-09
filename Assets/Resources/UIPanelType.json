@@ -1,0 +1,20 @@
+{
+	"infoList": [
+		{
+			"panelTypeString": "MAIN_PANEL",
+			"path": "UI/MainPanel"
+		},
+		{
+			"panelTypeString": "LOGO_PANEL",
+			"path": "UI/LogoPanel"
+		},
+		{
+			"panelTypeString": "POPUP_PANEL",
+			"path": "UI/PopupPanel"
+		},
+		{
+			"panelTypeString": "MISSION_PANEL",
+			"path": "UI/MissionPanel"
+		}
+	]
+}

@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8899bbebd9cc47f5b834986b7835edb, type: 3}
+  m_Name: AchievementDB
+  m_EditorClassIdentifier: 
+  achievements:
+  - Type: 0
+    Icon: {fileID: -8562809411437085166, guid: ba9d7776884432b40809054448e8ac7b, type: 3}
+    Name: Click Count
+    Desc: Do clicks {0}/{1} times
+    GoalCount: 0a000000140000001e0000002800000064000000
+    RewardCount: 0500000005000000050000000500000005000000
+    Background: {fileID: 368708845633570605, guid: c694dff05512b0946b619068ea6d5e82, type: 3}
+  - Type: 1
+    Icon: {fileID: -6245737239945712184, guid: 49b9dfaaa1b489f40b64b5b04be1fbaf, type: 3}
+    Name: Touch Upgrade
+    Desc: Upgrade touch {0}/{1} times
+    GoalCount: 0a000000140000001e000000
+    RewardCount: 050000000500000005000000
+    Background: {fileID: 73133333352650693, guid: 5bfcb75851b2377429b7f73bed2632b6, type: 3}
