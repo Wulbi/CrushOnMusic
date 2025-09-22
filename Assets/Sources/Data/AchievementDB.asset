@@ -19,11 +19,11 @@ MonoBehaviour:
     Desc: Do clicks {0}/{1} times
     GoalCount: 0a000000140000001e0000002800000064000000
     RewardCount: 0500000005000000050000000500000005000000
-    Background: {fileID: -8937612362747926924, guid: eed55b5fe6caa874cbe2949232fe2330, type: 3}
+    Background: {fileID: -8014426542725807988, guid: a013892ad574c6a489313e5ad12b4dc1, type: 3}
   - Type: 1
     Icon: {fileID: -6245737239945712184, guid: 49b9dfaaa1b489f40b64b5b04be1fbaf, type: 3}
     Name: Touch Upgrade
     Desc: Upgrade touch {0}/{1} times
     GoalCount: 0a000000140000001e000000
     RewardCount: 050000000500000005000000
-    Background: {fileID: 6568306980677896395, guid: eabcc90e395a95945a3cd16bc95efd4c, type: 3}
+    Background: {fileID: -3936893529541640743, guid: be8ee5f312c3f02489fd70c198a259c8, type: 3}

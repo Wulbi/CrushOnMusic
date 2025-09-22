@@ -11,6 +11,8 @@ public enum UIPanelType
     POPUP_PANEL,
     //미션 패널
     MISSION_PANEL,
+    //설정 패널
+    SETTING_PANEL,
 }
 
 public enum UIPanelStyleType

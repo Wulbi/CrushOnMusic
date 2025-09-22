@@ -1,5 +1,6 @@
 using UnityEngine;
 using GameLogic.Enum;
+using UnityEngine.UI;
 
 public class Musician : MonoBehaviour
 {
@@ -8,10 +9,13 @@ public class Musician : MonoBehaviour
     [Header("자동으로 설정할 루프 타입")]
     public LoopClipType[] loopClipTypes;
 
+    public Image MusicianImage;
+
     private void Awake()
     {
         if (audioSource == null)
             audioSource = GetComponent<AudioSource>();
+        
     }
 
     public void SetData(int order, int level, int grade)

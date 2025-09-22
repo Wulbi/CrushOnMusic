@@ -36,7 +36,7 @@ public class MainPanel : BasePanel
     //상점 탭 눌렀을 때 상점을 구성하는 프리팹 최상위 부모 오브젝트.
     public RectTransform shopRoot;
 
-    public SimpleButton buttonReset;
+    public SimpleButton buttonSetting;
     public SimpleButton buttonMission;
     
     public GameObject missionNoti;
@@ -47,21 +47,15 @@ public class MainPanel : BasePanel
     private float musicLoopInterval = 12f;
     private void Awake()
     {
-        buttonReset.OnClick = OnClickedReset;
+        buttonSetting.OnClick = OnClickedSetting;
         buttonMission.OnClick = OnClickedMission;
         
         missionNoti.SetActive(false);
     }
 
-    private void OnClickedReset()
+    private void OnClickedSetting()
     {
-        DOTween.KillAll(); 
-        
-        //데이터를 초기화.
-        UserSettings.DeleteAll();
-        
-        //씬을 한번 다시 불러올거야
-        SceneManager.LoadScene(0);
+        UIManager.Instance.PushPanel(UIPanelType.SETTING_PANEL);
     }
     
     private void OnClickedMission()

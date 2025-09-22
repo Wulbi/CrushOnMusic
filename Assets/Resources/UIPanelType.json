@@ -15,6 +15,10 @@
 		{
 			"panelTypeString": "MISSION_PANEL",
 			"path": "UI/MissionPanel"
+		},
+		{
+			"panelTypeString": "SETTING_PANEL",
+			"path": "UI/SettingPanel"
 		}
 	]
 }
