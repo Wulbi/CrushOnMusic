@@ -16,33 +16,33 @@ MonoBehaviour:
     icon: {fileID: -6245737239945712184, guid: 49b9dfaaa1b489f40b64b5b04be1fbaf, type: 3}
     Name: Touch Upgrade
   assistDataList:
-  - icon: {fileID: 4138223980208024357, guid: 2842f8d1a8c95d64ba97d94371c7d951, type: 3}
+  - icon: {fileID: -5672080810483179564, guid: 8305ff63ef65b684ea041bab2f9866a3, type: 3}
     Name: Drum
     gradeDataList:
     - needLevel: 4
       increaseUpgradeCost: 2
     - needLevel: 8
       increaseUpgradeCost: 3
-  - icon: {fileID: -8562809411437085166, guid: ba9d7776884432b40809054448e8ac7b, type: 3}
+  - icon: {fileID: 425828937590990995, guid: 7cff5ce6962b2c74a99bd5e2bb265f32, type: 3}
     Name: Bass
     gradeDataList: []
-  - icon: {fileID: 4138223980208024357, guid: 2842f8d1a8c95d64ba97d94371c7d951, type: 3}
+  - icon: {fileID: -1743848117925008471, guid: 5e0af0627fcc98447bc72e35df7f9261, type: 3}
     Name: Guitar
     gradeDataList: []
-  - icon: {fileID: -8562809411437085166, guid: ba9d7776884432b40809054448e8ac7b, type: 3}
+  - icon: {fileID: 1081719652503151641, guid: 9f38a5198db1d2548adbfedd984ba74a, type: 3}
     Name: Guitar2
     gradeDataList: []
-  - icon: {fileID: 4138223980208024357, guid: 2842f8d1a8c95d64ba97d94371c7d951, type: 3}
+  - icon: {fileID: 5593836938073143554, guid: a87d89437cc8fd64184acf40ba46fad0, type: 3}
     Name: Piano
     gradeDataList:
     - needLevel: 1
       increaseUpgradeCost: 10
-  - icon: {fileID: 4138223980208024357, guid: 2842f8d1a8c95d64ba97d94371c7d951, type: 3}
+  - icon: {fileID: -967158057364200739, guid: cea7ed320b6aed44bb40d3e4ad7c0739, type: 3}
     Name: Choir
     gradeDataList: []
-  - icon: {fileID: 4138223980208024357, guid: 2842f8d1a8c95d64ba97d94371c7d951, type: 3}
+  - icon: {fileID: 6065103611855083091, guid: 6cd4e81fa1676aa4aa71f99bc4c5367b, type: 3}
     Name: Flute
     gradeDataList: []
-  - icon: {fileID: 4138223980208024357, guid: 2842f8d1a8c95d64ba97d94371c7d951, type: 3}
+  - icon: {fileID: 5039017300036666153, guid: 9b61e4d7d04eb3a418e356b928c1e28f, type: 3}
     Name: Keyboard
     gradeDataList: []

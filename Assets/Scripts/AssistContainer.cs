@@ -6,9 +6,10 @@ using UnityEngine.UI;
 
 public class AssistContainer : MonoBehaviour
 {
+    [Header("UI Refs")]
     public Image Icon;
+    public Image IconBackground;
     public TMP_Text labelName;
-    
     public TMP_Text labelDesc;
     public TMP_Text labelCost;
     public TMP_Text labelLevel;
@@ -18,101 +19,111 @@ public class AssistContainer : MonoBehaviour
 
     public Button buttonMute;
     public Image buttonMuteImage;
-    
+
     public int order;
     public int level = 0;
     public int grade = 0;
-    
-    public MainPanel mainPanel;
 
+    public MainPanel mainPanel;
     public Musician linkedMusician;
-    
-    private float lastTimeUpdate = 0f;
-    
-    public UpgradeDB.AssistUpgradeData Data => DatabaseManager.Instance.upgradeDB.assistDataList[order];
-    
-    /// <summary>
-    /// 승급 체크
-    /// </summary>
-    /// <returns>승급 여부</returns>
+
+    [Header("Tick")]
+    private float nextUiTick;              // UI 업데이트 간격용
+    private const float UiTick = 0.15f;    // 매 프레임 갱신 대신 0.15초 주기
+
+    public UpgradeDB.AssistUpgradeData Data 
+        => DatabaseManager.Instance.upgradeDB.assistDataList[order];
+
     public bool CanBeUpgradeGrade()
     {
-        //승급 데이터 리스트가 없는 경우
-        if (Data.gradeDataList == null)
-            return false;
-        //현재 등급이 최대일 때 (더 이상 승급을 하지 못하는 경우)
-        if (Data.gradeDataList.Count <= grade)
-            return false;
-
+        if (Data.gradeDataList == null) return false;
+        if (Data.gradeDataList.Count <= grade) return false;
         return level >= Data.gradeDataList[grade].needLevel && Data.gradeDataList[grade].needLevel > 0;
     }
-    
-    
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+
     void Start()
     {
+        // 최초 색/라벨 일괄 적용
+        UIThemeUtil.SetLabel(labelName);
+        UIThemeUtil.SetLabel(labelDesc, isSub:true);
+        UIThemeUtil.SetLabel(labelCost);
+        UIThemeUtil.SetLabel(labelLevel);
+
         SetData();
+        ApplyVisuals(force:true);
     }
 
-    // Update is called once per frame
     void Update()
     {
-        //버튼 활성화 여부 체크 / 색상 변경
-        bool isUpgrade = GlobalManager.Instance.kiwiAmount >= GlobalManager.Instance.GetAssistUpgradeCost(order, level, grade);
-        //buttonUpgrade.interactable = isUpgrade;
-        buttonImage.color = isUpgrade ? (CanBeUpgradeGrade() ? Color.yellow : Color.green): Color.gray;
-        
+        if (Time.unscaledTime < nextUiTick) return;
+        nextUiTick = Time.unscaledTime + UiTick;
+
+        ApplyVisuals();
     }
-    
+
+    private void ApplyVisuals(bool force = false)
+    {
+        var gm = GlobalManager.Instance;
+
+        bool affordable = gm.kiwiAmount >= gm.GetAssistUpgradeCost(order, level, grade);
+        bool canGradeUp = CanBeUpgradeGrade();
+
+        // 버튼 색상 통일 적용
+        UIThemeUtil.SetUpgradeButtonVisual(buttonImage, affordable, canGradeUp);
+
+        // 버튼 상호작용은 색과 별개로 명확히
+        if (buttonUpgrade && buttonUpgrade.interactable != affordable)
+            buttonUpgrade.interactable = affordable;
+
+        // 레벨 라벨
+        var newLevelText = canGradeUp ? "Upgrade" : $"Lv.{level}";
+        if (labelLevel.text != newLevelText) labelLevel.text = newLevelText;
+    }
+
     public void SetData()
     {
         Icon.sprite     = Data.icon;
         labelName.text  = Data.Name;
         labelDesc.text  = $"{GlobalManager.Instance.GetAssistAmount(order, level)} Likes /s";
-        labelLevel.text = CanBeUpgradeGrade() ? "Upgrade" : $"Lv.{level}";
         labelCost.text  = $"+{GlobalManager.Instance.GetAssistUpgradeCost(order, level, grade)}";
     }
 
-    
     public void OnClickedUpgrade()
     {
-        BigDouble upgradeCost = GlobalManager.Instance.GetAssistUpgradeCost(order, level, grade);
-        if (GlobalManager.Instance.kiwiAmount >= upgradeCost)
-        {
-            //업그레이드 진행.
-            GlobalManager.Instance.kiwiAmount -= upgradeCost;
+        var gm = GlobalManager.Instance;
+        BigDouble cost = gm.GetAssistUpgradeCost(order, level, grade);
 
-            if (CanBeUpgradeGrade())
-            {
-                //승급 처리.
-                grade += 1;
-                GlobalManager.Instance.assistClickLevelList[order].grade = grade;
-            }
-            else
-            {
-                //기존 업그레이드.
-                level += 1;
-                GlobalManager.Instance.assistClickLevelList[order].level = level;
-            }
-            
-            SetData();
-            mainPanel.SetContainers();
-            
-            EventManager.Instance.TriggerEvent(GameProgressEventType.ASSIST_VIEW_UPGRADE, this);
+        if (gm.kiwiAmount < cost)
+        {
+            UIManager.Instance.PushPanel(UIPanelType.POPUP_PANEL, "Warning", "You need more Likes!");
+            return;
+        }
+
+        gm.kiwiAmount -= cost;
+
+        if (CanBeUpgradeGrade())
+        {
+            grade += 1;
+            gm.assistClickLevelList[order].grade = grade;
         }
         else
         {
-            UIManager.Instance.PushPanel(UIPanelType.POPUP_PANEL, "Warning", "You need more Likes!");
+            level += 1;
+            gm.assistClickLevelList[order].level = level;
         }
-        
+
+        SetData();
+        mainPanel.SetContainers();
+        EventManager.Instance.TriggerEvent(GameProgressEventType.ASSIST_VIEW_UPGRADE, this);
+
+        // 업그레이드 직후 색/문구 최신화
+        ApplyVisuals(force:true);
     }
 
     public void SetMuteState(bool muted)
     {
-        if (linkedMusician != null)
-            linkedMusician.Mute(muted);
-
-        buttonMuteImage.color = muted ? Color.red : Color.black;  
+        linkedMusician?.Mute(muted);
+        UIThemeUtil.SetMuteVisual(buttonMuteImage, muted);
     }
 
     public void OnClickMute()
