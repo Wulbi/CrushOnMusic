@@ -16,7 +16,6 @@ public class AchievementDB : ScriptableObject
         public string Desc;
         public int[] GoalCount;
         public int[] RewardCount;
-        public Sprite Background;
     
     }
 }

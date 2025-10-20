@@ -21,7 +21,7 @@ public class GlobalManager : SingletonBehaviour<GlobalManager>
     /// <summary>
     /// 키위 수량
     /// </summary>
-    public BigDouble kiwiAmount;
+    public BigDouble likesAmount;
     
     /// <summary>
     /// 클릭 레벨
@@ -64,7 +64,7 @@ public class GlobalManager : SingletonBehaviour<GlobalManager>
         if (lastUpdateTime >= 1f)
         {
             lastUpdateTime = 0f;
-            kiwiAmount += GetKPS();
+            likesAmount += GetKPS();
         }
     }
 
@@ -72,7 +72,7 @@ public class GlobalManager : SingletonBehaviour<GlobalManager>
     {
         //저장된 유저 데이터를 게임 데이터로 변환한다.
         //1. 키위 수량 데이터 불러오기
-        kiwiAmount = UserSettings.Data.coin;
+        likesAmount = UserSettings.Data.coin;
 
         //2. 터치 레벨 데이터 불러오기
         clickLevel = UserSettings.Data.baseLevel;
@@ -115,7 +115,7 @@ public class GlobalManager : SingletonBehaviour<GlobalManager>
     {
         //게임 데이터를 유저 데이터로 변환 -> 저장.
         //1. 키위 수량 저장
-        UserSettings.Data.coin = kiwiAmount;
+        UserSettings.Data.coin = likesAmount;
         //2. 터치 레벨 저장
         UserSettings.Data.baseLevel = clickLevel;
         //3. 보조 장치 데이터 저장

@@ -54,7 +54,7 @@ public class MainContainer : MonoBehaviour
     private void ApplyButtonVisuals()
     {
         var gm = GlobalManager.Instance;
-        bool affordable = gm.kiwiAmount >= gm.GetUpgradeCost();
+        bool affordable = gm.likesAmount >= gm.GetUpgradeCost();
         bool canGradeUp = false; // 메인 업그레이드는 등급업 개념이 없다면 항상 false
 
         // 버튼 색상(성공/불가) 통일 적용
@@ -82,9 +82,9 @@ public class MainContainer : MonoBehaviour
         var gm = GlobalManager.Instance;
         BigDouble upgradeCost = gm.GetUpgradeCost();
 
-        if (gm.kiwiAmount >= upgradeCost)
+        if (gm.likesAmount >= upgradeCost)
         {
-            gm.kiwiAmount -= upgradeCost;
+            gm.likesAmount -= upgradeCost;
             gm.clickLevel += 1;
 
             AchievementManager.Instance.ChangeAchievement(

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using BigNumber;
 using DG.Tweening;
 using GameLogic.UI.Custom;
+using GameLogic.Manager;
+using GameLogic.Enum;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -11,7 +13,7 @@ using UnityEngine.SceneManagement;
 
 public class MainPanel : BasePanel
 {
-    public TMP_Text labelKiwi;
+    public TMP_Text labelLikes;
     public TMP_Text labelKps;
     
     public GameObject mainPref;
@@ -19,13 +21,7 @@ public class MainPanel : BasePanel
     
     public RectTransform containerRoot;
 
-    public GameObject musicPref;
-    public RectTransform musicRoot;
-    
-    public FeverBar fever;
-    
     public List<GameObject> containerList = new List<GameObject>();
-    public List<GameObject> musicList = new List<GameObject>();
     
     public Tabs tabs;
     
@@ -67,8 +63,6 @@ public class MainPanel : BasePanel
         EventManager.Instance.AddListener<Vector3>(GameProgressEventType.TOUCH_BEGIN, OnTouchBegin);
         EventManager.Instance.AddListener<AssistContainer>(GameProgressEventType.ASSIST_VIEW_UPGRADE, OnAssistViewUpgrade);
         EventManager.Instance.AddListener<FeverBar>(GameProgressEventType.FEVER_UPDATED, OnFeverUpdated);
-        EventManager.Instance.AddListener<Musician>(GameProgressEventType.MUSIC_BEGIN, OnMusicBegin);
-        EventManager.Instance.AddListener<Musician>(GameProgressEventType.MUSIC_END, OnMusicEnd);
         EventManager.Instance.AddListener<AchievementState>(GameProgressEventType.ACHIEVEMENT_UPDATED, OnAchievementUpdated);
 
         tabs.OnTabSwitched += OnTabSwitched;
@@ -82,8 +76,6 @@ public class MainPanel : BasePanel
         EventManager.Instance.RemoveListener<Vector3>(GameProgressEventType.TOUCH_BEGIN, OnTouchBegin);
         EventManager.Instance.RemoveListener<AssistContainer>(GameProgressEventType.ASSIST_VIEW_UPGRADE, OnAssistViewUpgrade);
         EventManager.Instance.RemoveListener<FeverBar>(GameProgressEventType.FEVER_UPDATED, OnFeverUpdated);
-        EventManager.Instance.RemoveListener<Musician>(GameProgressEventType.MUSIC_BEGIN, OnMusicBegin);
-        EventManager.Instance.RemoveListener<Musician>(GameProgressEventType.MUSIC_END, OnMusicEnd);
         EventManager.Instance.RemoveListener<AchievementState>(GameProgressEventType.ACHIEVEMENT_UPDATED, OnAchievementUpdated);
 
         tabs.OnTabSwitched -= OnTabSwitched;
@@ -94,17 +86,6 @@ public class MainPanel : BasePanel
         //진행도가 바뀌거나, 보상을 받았을 때
         missionNoti.SetActive(AchievementManager.Instance.GetRewardStatus());
     }
-
-    private void OnMusicEnd(Musician musician)
-    {
-        if (musician != null && musician.audioSource != null)
-        {
-            if (musician.audioSource.isPlaying)
-            {
-                musician.audioSource.Stop();
-            }
-        }
-    }
     
     private void OnTabSwitched(TabType tabType)
     {
@@ -113,6 +94,16 @@ public class MainPanel : BasePanel
 
         currentTab = tabType;
         SetData(tabType);
+        
+        // Start/stop loop playback based on tab
+        if (tabType == TabType.CONTENTS_VIEW_MAIN)
+        {
+            StartAssistLoopPlayback();
+        }
+        else
+        {
+            StopAssistLoopPlayback();
+        }
     }
 
     private void SetData(TabType tabType)
@@ -142,8 +133,6 @@ public class MainPanel : BasePanel
     {
         base.OnEnter(datas);
         
-        fever.Init();
-        
         this.gameObject.SetActive(true);
         
         tabs.Prepare(new List<TabType>() { TabType.CONTENTS_VIEW_MAIN , TabType.CONTENTS_VIEW_SHOP }
@@ -161,18 +150,20 @@ public class MainPanel : BasePanel
     }
     private void OnTouchBegin(Vector3 touchPos)
     {
-        fever.IncreaseFever();
+        // Play click sound directly
+        SoundManager.Instance.PlaySfx(CommonSounds.GetClip(SfxType.TOUCH_BEGIN));
 
         // 클릭 시 음악 시작
         if (!GlobalManager.Instance.IsFever)
         {
-            foreach (var musicObj in musicList)
+            // Play music from all active assist containers
+            foreach (var containerObj in containerList)
             {
-                Musician musician = musicObj.GetComponent<Musician>();
-                if (musician != null)
+                AssistContainer assistContainer = containerObj.GetComponent<AssistContainer>();
+                
+                if (assistContainer != null && assistContainer.level > 0)
                 {
-                    EventManager.Instance.TriggerEvent(GameProgressEventType.MUSIC_END, musician);
-                    EventManager.Instance.TriggerEvent(GameProgressEventType.MUSIC_BEGIN, musician);
+                    assistContainer.PlayMusic();
                 }
             }
         }
@@ -181,17 +172,11 @@ public class MainPanel : BasePanel
     private void OnAssistViewUpgrade(AssistContainer container)
     {
         SetKps();
-    }
-
-    private void OnMusicBegin(Musician musician)
-    {
-        if (musician != null && musician.audioSource != null)
+        
+        // Restart loop playback for the upgraded container only
+        if (container != null)
         {
-            if (!musician.audioSource.isPlaying)
-            {
-                musician.audioSource.loop = false;
-                musician.audioSource.Play();
-            }
+            container.StartLoopPlayback();
         }
     }
 
@@ -208,13 +193,52 @@ public class MainPanel : BasePanel
         }
     }
     
+    private void StartAssistLoopPlayback()
+    {
+        // Start continuous loop playback for all active assist containers
+        foreach (var containerObj in containerList)
+        {
+            AssistContainer assistContainer = containerObj.GetComponent<AssistContainer>();
+            if (assistContainer != null && assistContainer.level > 0)
+            {
+                assistContainer.StartLoopPlayback();
+            }
+        }
+    }
+    
+    private void StartNewAssistLoopPlayback()
+    {
+        // Only start containers that aren't already playing
+        foreach (var containerObj in containerList)
+        {
+            AssistContainer assistContainer = containerObj.GetComponent<AssistContainer>();
+            if (assistContainer != null)
+            {
+                assistContainer.StartLoopPlaybackIfNeeded();
+            }
+        }
+    }
+    
+    private void StopAssistLoopPlayback()
+    {
+        // Stop loop playback for all assist containers
+        foreach (var containerObj in containerList)
+        {
+            AssistContainer assistContainer = containerObj.GetComponent<AssistContainer>();
+            if (assistContainer != null)
+            {
+                assistContainer.StopLoopPlayback();
+            }
+        }
+    }
+    
     
     /// <summary>
     /// 컨테이너를 만드는 함수. (동적 생성)
     /// </summary>
     public void SetContainers()
     {
-        ClearContainersExceptMusicians(); 
+        ClearContainers(); 
 
         AddMainContainer();
 
@@ -231,46 +255,22 @@ public class MainPanel : BasePanel
             assist.mainPanel = this;
             assist.transform.localScale = Vector3.one;
 
-            Musician musician;
-            if (i < musicList.Count)
-            {
-                // 기존 오브젝트 재사용
-                musician = musicList[i].GetComponent<Musician>();
-            }
-            else
-            {
-                // 새로 생성
-                GameObject musicObj = Instantiate(musicPref, musicRoot);
-                musician = musicObj.GetComponent<Musician>();
-                musicList.Add(musicObj);
-            }
-
-            musician.SetData(i, assistData.level, assistData.grade);
-            assist.linkedMusician = musician;
+            // Set mute state directly on the container
             assist.SetMuteState(assistData.isMuted);
 
             containerList.Add(assistObj);
         }
+        
+        // Start loop playback for new containers only (don't interrupt existing ones)
+        StartNewAssistLoopPlayback();
     }
 
-    private void ClearContainersExceptMusicians()
-    {
-        foreach (var obj in containerList)
-            Destroy(obj);
-
-        containerList.Clear();
-    }
-    
-    
     private void ClearContainers()
     {
         foreach (var obj in containerList)
             Destroy(obj);
-        foreach (var music in musicList)
-            Destroy(music);
-    
+
         containerList.Clear();
-        musicList.Clear();
     }
     
     private void AddMainContainer()
@@ -294,22 +294,22 @@ public class MainPanel : BasePanel
     // Update is called once per frame
     void Update()
     {
-        if (labelKiwi != null && GlobalManager.HasInstance)
+        if (labelLikes != null && GlobalManager.HasInstance)
         {
-            labelKiwi.text = "Likes : " + GlobalManager.Instance.kiwiAmount.ToCustomString();
+            labelLikes.text = "Likes : " + GlobalManager.Instance.likesAmount.ToCustomString();
         }
         bool isFever = GlobalManager.Instance.IsFever;
 
         // Fever 진입 시점에만 재생 리셋
         if (isFever && !wasFever)
         {
-            foreach (var musicObj in musicList)
+            foreach (var containerObj in containerList)
             {
-                Musician musician = musicObj.GetComponent<Musician>();
-                if (musician != null)
+                AssistContainer assistContainer = containerObj.GetComponent<AssistContainer>();
+                
+                if (assistContainer != null && assistContainer.level > 0)
                 {
-                    EventManager.Instance.TriggerEvent(GameProgressEventType.MUSIC_END, musician);
-                    EventManager.Instance.TriggerEvent(GameProgressEventType.MUSIC_BEGIN, musician);
+                    assistContainer.PlayMusic();
                 }
             }
 
@@ -319,12 +319,13 @@ public class MainPanel : BasePanel
         // Fever가 끝난 순간: 음악 정지
         if (!isFever && wasFever)
         {
-            foreach (var musicObj in musicList)
+            foreach (var containerObj in containerList)
             {
-                Musician musician = musicObj.GetComponent<Musician>();
-                if (musician != null)
+                AssistContainer assistContainer = containerObj.GetComponent<AssistContainer>();
+                
+                if (assistContainer != null && assistContainer.audioSource != null)
                 {
-                    EventManager.Instance.TriggerEvent(GameProgressEventType.MUSIC_END, musician);
+                    assistContainer.audioSource.Stop();
                 }
             }
         }
@@ -338,12 +339,13 @@ public class MainPanel : BasePanel
             {
                 musicLoopTimer = 0f;
 
-                foreach (var musicObj in musicList)
+                foreach (var containerObj in containerList)
                 {
-                    Musician musician = musicObj.GetComponent<Musician>();
-                    if (musician != null && !musician.audioSource.isPlaying)
+                    AssistContainer assistContainer = containerObj.GetComponent<AssistContainer>();
+                    
+                    if (assistContainer != null && assistContainer.audioSource != null && !assistContainer.audioSource.isPlaying)
                     {
-                        EventManager.Instance.TriggerEvent(GameProgressEventType.MUSIC_BEGIN, musician);
+                        assistContainer.PlayMusic();
                     }
                 }
             }

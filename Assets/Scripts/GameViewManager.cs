@@ -8,17 +8,6 @@ using UnityEngine.EventSystems;
 
 public class GameViewManager : MonoBehaviour
 {
-    public Animator kiwiAnim;
-
-    /// <summary>
-    /// 키위 본체 이미지
-    /// </summary>
-    public SpriteRenderer kiwiImage;
-    
-    //변경할 이미지들
-    public Sprite defaultKiwi;
-    public Sprite goldKiwi;
-    
     /// <summary>
     /// 보조 오브젝트 복제할 프리팹
     /// </summary>
@@ -79,17 +68,17 @@ public class GameViewManager : MonoBehaviour
     {
         if (feverBar.ActionType == FeverBar.FeverActionType.ACTIVE)
         {
-            //kiwiImage.sprite = goldKiwi;
+            //earthImage.sprite = goldEarth;
         }
         else
         {
-            //kiwiImage.sprite = defaultKiwi;
+            //earthImage.sprite = defaultLikes;
         }
     }
     private void OnTouchBegin(Vector3 pos)
     {
-        AddKiwi(GlobalManager.Instance.GetTouchAmount());
-        //kiwiAnim.Play("Touch",0,0f);
+        AddLikes(GlobalManager.Instance.GetTouchAmount());
+        //earthAnim.Play("Touch",0,0f);
 
         SoundManager.Instance.PlaySfx(CommonSounds.GetClip(SfxType.TOUCH_BEGIN));
         
@@ -113,9 +102,9 @@ public class GameViewManager : MonoBehaviour
         */
 
     }
-    private void AddKiwi(BigDouble amt)
+    private void AddLikes(BigDouble amt)
     {
-        GlobalManager.Instance.kiwiAmount = GlobalManager.Instance.kiwiAmount + amt;
+        GlobalManager.Instance.likesAmount = GlobalManager.Instance.likesAmount + amt;
     }
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
