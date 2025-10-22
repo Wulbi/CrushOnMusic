@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem.LowLevel;
 
 public class Character : MonoBehaviour
 {
@@ -24,7 +25,7 @@ public class Character : MonoBehaviour
             other.gameObject.GetComponent<BoxCollider>().enabled = false;
             gameObject.GetComponent<BoxCollider>().enabled = false;
 
-
+    
             foreach (Transform child in transform)
             {
                 if (child.gameObject.activeSelf)

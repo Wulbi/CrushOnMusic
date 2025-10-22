@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using BigNumber;
 using System.Collections.Generic;
+using NUnit.Framework.Constraints;
 
 [System.Serializable]
 public class AssistData
@@ -36,10 +37,10 @@ public class GlobalManager : SingletonBehaviour<GlobalManager>
     /// 피버 상태 체크
     /// </summary>
     public bool IsFever = false;
-
-    public GameObject background;
     
     private float lastUpdateTime = 0f;
+
+    public bool isFirst;    
     /// <summary>
     /// 초당 키위 획득량 값 반환
     /// </summary>

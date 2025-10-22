@@ -34,6 +34,7 @@ public class MainPanel : BasePanel
 
     public SimpleButton buttonSetting;
     public SimpleButton buttonMission;
+    public SimpleButton buttonGeo;
     
     public GameObject missionNoti;
 
@@ -45,6 +46,7 @@ public class MainPanel : BasePanel
     {
         buttonSetting.OnClick = OnClickedSetting;
         buttonMission.OnClick = OnClickedMission;
+        buttonGeo.OnClick = OnClickedGeo;
         
         missionNoti.SetActive(false);
     }
@@ -57,6 +59,12 @@ public class MainPanel : BasePanel
     private void OnClickedMission()
     {
         UIManager.Instance.PushPanel(UIPanelType.MISSION_PANEL);
+    }
+    
+    private void OnClickedGeo()
+    {
+        GlobalManager.Instance.SaveData();
+        SceneManager.LoadScene("Scenes/Sprunki_Sample");
     }
     private void OnEnable()
     {

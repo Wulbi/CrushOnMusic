@@ -49,7 +49,7 @@ public static class UserSettings
     {   
         try
         {
-            UnityEngine.Debug.Log($"<color=red><b>[UserSetting] 유저 데이터 저장하기 완료</b></color>");
+                UnityEngine.Debug.Log($"<color=red><b>[UserSetting] 유저 데이터 저장하기 완료</b></color>");
             //Json으로 변환
             string json = JsonUtility.ToJson(Data);
             //Json 파일을 저장

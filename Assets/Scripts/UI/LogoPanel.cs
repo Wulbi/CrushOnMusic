@@ -27,6 +27,15 @@ public class LogoPanel : BasePanel
     {
         buttonStart.OnClick = OnClickStart;
         //buttonStart.onClick.AddListener(OnClickStart);
+        if (!GlobalManager.Instance.isFirst)
+        {
+            OnClickStart();
+        }
+        else
+        {
+            GlobalManager.Instance.isFirst = false;
+        }
+        
     }
     public override void OnEnter(params object[] datas)
     {
@@ -66,5 +75,7 @@ public class LogoPanel : BasePanel
         SoundManager.Instance.PlayMusic(CommonSounds.GetClip(MusicType.MAIN));
         
         UIManager.Instance.PushPanel(UIPanelType.MAIN_PANEL);
+
+        
     }
 }
