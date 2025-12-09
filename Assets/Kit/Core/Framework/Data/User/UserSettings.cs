@@ -111,6 +111,12 @@ public static class UserSettings
     {
         try
         {
+            // Reset in-memory data first
+            if (Data != null)
+            {
+                Data.OnReset();
+            }
+            
             await Client.DeleteAll();
         }
         catch (Exception e)

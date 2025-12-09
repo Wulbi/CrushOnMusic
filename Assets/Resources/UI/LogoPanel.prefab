@@ -460,6 +460,7 @@ GameObject:
   - component: {fileID: 3423645547867283074}
   - component: {fileID: 1933359878952759888}
   - component: {fileID: 3537068471747979174}
+  - component: {fileID: 6123038187641184131}
   m_Layer: 5
   m_Name: Text (TMP)
   m_TagString: Untagged
@@ -514,7 +515,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Crush \nOn\nMusic"
+  m_text: "\uBC00\uD0A4 \uC6E8\uC774\uBE0C"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 2584b50fc36a7434b93fa075a570322c, type: 2}
   m_sharedMaterial: {fileID: 2725246771768770956, guid: 2584b50fc36a7434b93fa075a570322c, type: 2}
@@ -541,7 +542,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 96.6
+  m_fontSize: 100
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -585,3 +586,19 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &6123038187641184131
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8569271083861050407}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee67eb0f25106464ebc206ba4853d704, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  textComponent: {fileID: 3537068471747979174}
+  translationKey: UI_TEXT_LOGO_TITLE
+  caseType: 0
+  isEnableTranslate: 1

@@ -156,15 +156,15 @@ public class UserContentsData
 public class UserAssistData : UserContentsData
 {
     /// <summary>
-    /// 보조 등급
+    /// 보조 컨테이너가 업그레이드되었는지 여부
     /// </summary>
-    public int grade;
+    public bool isUpgraded;
 
     public bool isMuted;
     
     public UserAssistData() : base() 
     { 
-        grade       = 0;
+        isUpgraded = false;
         isMuted = false;
     }
 
@@ -173,8 +173,7 @@ public class UserAssistData : UserContentsData
         System.Text.StringBuilder stringBuilder = new System.Text.StringBuilder();
 
         stringBuilder.Append($"itemId : {itemId.ToString()}\n");
-        stringBuilder.Append($"level : {level.ToString()}\n");
-        stringBuilder.Append($"grade : {grade.ToString()}\n");
+        stringBuilder.Append($"isUpgraded : {isUpgraded.ToString()}\n");
         return stringBuilder.ToString();
     }
 }

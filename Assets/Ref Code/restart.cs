@@ -7,9 +7,9 @@ public class restart : MonoBehaviour
 {
     public void loadScene(int scene)
     {
-        SceneManager.LoadScene(scene);
-
-
+        // Reload the current scene to reset it
+        // This works for any scene, making it a true "restart" button
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }
 

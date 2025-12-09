@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "573479427815",
+    "project_id": "project-milkywave",
+    "storage_bucket": "project-milkywave.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:573479427815:android:59631e0cd4f88f7553cc42",
+        "android_client_info": {
+          "package_name": "com.skku.milkywave"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAcWPq1NisSp3LfiRb558EVptYJGZImD8Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,4 +1,4 @@
-using System;
+    using System;
 using BigNumber;
 using UnityEngine;
 using TMPro;
@@ -73,7 +73,7 @@ public class MainContainer : MonoBehaviour
         if (Icon) Icon.sprite = db.mainData.icon;
         if (labelName)  labelName.text  = db.mainData.Name;
         if (labelDesc)  labelDesc.text  = $"{gm.GetTouchAmount()} Likes /touch";
-        if (labelLevel) labelLevel.text = $"Lv.{gm.clickLevel}";
+        if (labelLevel) labelLevel.text = ""; // Remove level display
         if (labelCost)  labelCost.text  = $"+{gm.GetUpgradeCost()}";
     }
 
@@ -95,6 +95,9 @@ public class MainContainer : MonoBehaviour
 
             // 버튼 비주얼도 즉시 재평가
             ApplyButtonVisuals();
+            
+            // Save data immediately after upgrade to persist changes
+            GlobalManager.Instance.SaveData();
         }
         else
         {

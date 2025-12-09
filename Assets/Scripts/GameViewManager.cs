@@ -59,7 +59,8 @@ public class GameViewManager : MonoBehaviour
     private void OnGameStarted()
     {
         //데이터 다 처리되고 -> 바로 이벤트 쏘면 된다
-        for (int i = 0; i < GlobalManager.Instance.assistClickLevelList[0].level; i++)
+        if (GlobalManager.Instance.assistClickLevelList.Count > 0 && 
+            GlobalManager.Instance.assistClickLevelList[0].isUpgraded)
         {
             //AddAssistView();
         }

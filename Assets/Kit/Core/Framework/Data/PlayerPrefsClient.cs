@@ -18,6 +18,7 @@ public class PlayerPrefClient : ISaveClient
     public Task DeleteAll()
     {
         PlayerPrefs.DeleteAll();
+        PlayerPrefs.Save();
         return Task.CompletedTask;
     }
     

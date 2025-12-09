@@ -64,7 +64,7 @@ public class MainPanel : BasePanel
     private void OnClickedGeo()
     {
         GlobalManager.Instance.SaveData();
-        SceneManager.LoadScene("Scenes/Sprunki_Sample");
+        SceneManager.LoadScene("Scenes/Geocentrism");
     }
     private void OnEnable()
     {
@@ -145,6 +145,25 @@ public class MainPanel : BasePanel
         
         tabs.Prepare(new List<TabType>() { TabType.CONTENTS_VIEW_MAIN , TabType.CONTENTS_VIEW_SHOP }
             , TabType.CONTENTS_VIEW_MAIN);
+        
+        // Refresh containers when panel is opened (important after reset)
+        if (currentTab == TabType.CONTENTS_VIEW_MAIN)
+        {
+            SetContainers();
+            SetKps();
+        }
+    }
+    
+    public override void OnResume()
+    {
+        base.OnResume();
+        
+        // Refresh containers when panel is resumed (important after reset)
+        if (currentTab == TabType.CONTENTS_VIEW_MAIN)
+        {
+            SetContainers();
+            SetKps();
+        }
     }
     
     private void OnFeverUpdated(FeverBar feverBar)
@@ -169,7 +188,7 @@ public class MainPanel : BasePanel
             {
                 AssistContainer assistContainer = containerObj.GetComponent<AssistContainer>();
                 
-                if (assistContainer != null && assistContainer.level > 0)
+                if (assistContainer != null && assistContainer.isUpgraded)
                 {
                     assistContainer.PlayMusic();
                 }
@@ -204,14 +223,14 @@ public class MainPanel : BasePanel
     private void StartAssistLoopPlayback()
     {
         // Start continuous loop playback for all active assist containers
-        foreach (var containerObj in containerList)
-        {
-            AssistContainer assistContainer = containerObj.GetComponent<AssistContainer>();
-            if (assistContainer != null && assistContainer.level > 0)
+            foreach (var containerObj in containerList)
             {
-                assistContainer.StartLoopPlayback();
+                AssistContainer assistContainer = containerObj.GetComponent<AssistContainer>();
+                if (assistContainer != null && assistContainer.isUpgraded)
+                {
+                    assistContainer.StartLoopPlayback();
+                }
             }
-        }
     }
     
     private void StartNewAssistLoopPlayback()
@@ -249,6 +268,14 @@ public class MainPanel : BasePanel
         ClearContainers(); 
 
         AddMainContainer();
+        
+        // Update MainContainer data after creating it
+        MainContainer mainContainer = containerList
+            .Find(x => x.GetComponent<MainContainer>() != null)?.GetComponent<MainContainer>();
+        if (mainContainer != null)
+        {
+            mainContainer.SetData();
+        }
 
         int assistCount = GetActiveAssistCount();
         for (int i = 0; i < assistCount; i++)
@@ -258,8 +285,7 @@ public class MainPanel : BasePanel
             GameObject assistObj = Instantiate(assistPref, containerRoot);
             AssistContainer assist = assistObj.GetComponent<AssistContainer>();
             assist.order = i;
-            assist.level = assistData.level;
-            assist.grade = assistData.grade;
+            assist.isUpgraded = assistData.isUpgraded;
             assist.mainPanel = this;
             assist.transform.localScale = Vector3.one;
 
@@ -290,13 +316,29 @@ public class MainPanel : BasePanel
 
     private int GetActiveAssistCount()
     {
-        int count = 0;
-        foreach (var data in GlobalManager.Instance.assistClickLevelList)
+        // First assist container (Drum) always shows
+        // Subsequent assist containers only show when the previous one has been upgraded
+        var assistList = GlobalManager.Instance.assistClickLevelList;
+        if (assistList == null || assistList.Count == 0)
+            return 0;
+        
+        int count = 1; // First assist (Drum) always shows
+        
+        for (int i = 1; i < assistList.Count; i++)
         {
-            if (data.level > 0) count++;
+            // Check if previous assist has been upgraded
+            if (assistList[i - 1].isUpgraded)
+            {
+                count++;
+            }
+            else
+            {
+                // Stop at first assist that doesn't meet the requirement
+                break;
+            }
         }
-
-        return Mathf.Min(count + 1, GlobalManager.Instance.assistClickLevelList.Count);
+        
+        return count;
     }
     
     // Update is called once per frame
@@ -315,7 +357,7 @@ public class MainPanel : BasePanel
             {
                 AssistContainer assistContainer = containerObj.GetComponent<AssistContainer>();
                 
-                if (assistContainer != null && assistContainer.level > 0)
+                if (assistContainer != null && assistContainer.isUpgraded)
                 {
                     assistContainer.PlayMusic();
                 }

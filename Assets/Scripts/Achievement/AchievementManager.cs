@@ -7,6 +7,18 @@ public class AchievementManager : SingletonBehaviour<AchievementManager>
     //1. 가공 클래스들을 다 가지고 있다.
     public List<AchievementState> achievementList = new List<AchievementState>();
 
+    public void ResetData()
+    {
+        // Reset all achievements to default values
+        achievementList.Clear();
+        
+        foreach (var achData in DatabaseManager.Instance.achievementDB.achievements)
+        {
+            achievementList.Add(
+                new AchievementState(achData, 0, 0));
+        }
+    }
+
     public void InitData()
     {
         achievementList.Clear();

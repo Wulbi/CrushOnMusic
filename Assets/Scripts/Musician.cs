@@ -20,23 +20,45 @@ public class Musician : MonoBehaviour
 
     public void SetData(int order, int level, int grade)
     {
-        if (order >= 0 && order < loopClipTypes.Length)
+        AudioClip clip = null;
+        
+        // Try to get clip from UpgradeDB first
+        if (DatabaseManager.HasInstance && DatabaseManager.Instance.upgradeDB != null)
         {
-            LoopClipType type = loopClipTypes[order];
-            AudioClip clip = CommonSounds.GetClip(type, grade);
+            var assistDataList = DatabaseManager.Instance.upgradeDB.assistDataList;
+            if (assistDataList != null && order >= 0 && order < assistDataList.Count)
+            {
+                var assistData = assistDataList[order];
+                if (assistData.loopClips != null && assistData.loopClips.Count > 0)
+                {
+                    // Use grade to select clip, or first clip if grade is out of range
+                    int clipIndex = Mathf.Clamp(grade, 0, assistData.loopClips.Count - 1);
+                    clip = assistData.loopClips[clipIndex];
+                }
+            }
+        }
+        
+        // Fallback to loopClipTypes array if UpgradeDB doesn't have clips
+        if (clip == null && loopClipTypes != null && order >= 0 && order < loopClipTypes.Length)
+        {
+            Debug.LogWarning($"[Musician] UpgradeDB에 loopClips가 없습니다. order: {order}, loopClipTypes 배열을 사용합니다.");
+            // Note: Can't get clip from CommonSounds anymore, so just log warning
+        }
 
-            if (clip != null && level > 0)
-            {
-                audioSource.clip = clip;
-            }
-            else
-            {
-                Debug.LogWarning($"[Musician] 음악 클립이 존재하지 않거나 레벨이 0 이하입니다. LoopClipType: {type}, Grade: {grade}");
-            }
+        if (clip != null && level > 0)
+        {
+            audioSource.clip = clip;
         }
         else
         {
-            Debug.LogError($"[Musician] order 인덱스가 loopClipTypes 범위를 벗어났습니다. order: {order}, 배열 길이: {loopClipTypes.Length}");
+            if (level <= 0)
+            {
+                Debug.LogWarning($"[Musician] 레벨이 0 이하입니다. order: {order}, Level: {level}");
+            }
+            else
+            {
+                Debug.LogWarning($"[Musician] 음악 클립이 존재하지 않습니다. order: {order}, UpgradeDB에 loopClips를 설정해주세요.");
+            }
         }
     }
 

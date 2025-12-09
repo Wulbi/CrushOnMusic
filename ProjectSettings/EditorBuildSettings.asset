@@ -12,8 +12,8 @@ EditorBuildSettings:
     path: Assets/Scenes/Heliocentrism.unity
     guid: 5c128d7e2badcd640a77722145e43229
   - enabled: 1
-    path: Assets/Scenes/Sprunki_Sample.unity
-    guid: 419051d1a04338d42b696ccee3668f69
+    path: Assets/Scenes/Geocentrism.unity
+    guid: 32b76ad2ad3824442944953eb22fc0ba
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_UseUCBPForAssetBundles: 0

@@ -1,0 +1,2 @@
+	English	Korean
+UI_TEXT_LOGO_TITLE	Milky Wave	밀키 웨이브

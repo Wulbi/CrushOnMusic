@@ -685,23 +685,18 @@ MonoBehaviour:
     exponent: 0
   clickLevel: 1
   assistClickLevelList:
-  - level: 0
-    grade: 0
+  - isUpgraded: 0
     isMuted: 0
-  - level: 0
-    grade: 0
+  - isUpgraded: 0
     isMuted: 0
-  - level: 0
-    grade: 0
+  - isUpgraded: 0
     isMuted: 0
-  - level: 0
-    grade: 0
+  - isUpgraded: 0
     isMuted: 0
-  - level: 0
-    grade: 0
+  - isUpgraded: 0
     isMuted: 0
   IsFever: 0
-  background: {fileID: 1565309746}
+  isFirst: 0
 --- !u!4 &567380858
 Transform:
   m_ObjectHideFlags: 0
@@ -1198,6 +1193,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1424511151}
   - component: {fileID: 1424511150}
+  - component: {fileID: 1424511152}
   m_Layer: 0
   m_Name: Manager
   m_TagString: Untagged
@@ -1217,10 +1213,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b2147527e5e1499cb99f8a4086adfeb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  earthAnim: {fileID: 0}
-  earthImage: {fileID: 0}
-  defaultLikes: {fileID: 4138223980208024357, guid: 2842f8d1a8c95d64ba97d94371c7d951, type: 3}
-  goldEarth: {fileID: -899923415061204198, guid: 5d0e3ff4ca44c06419accb10d93905fb, type: 3}
   assistView01Prefab: {fileID: 5602583789803306888, guid: e0a496be27f714445b9e717b130b92d8, type: 3}
   assistViewRoot: {fileID: 1503119868}
   assistViewPerCircle: 35
@@ -1242,6 +1234,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1424511152
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1424511149}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae49fdd91b117fd47a037cdaf6f4ecb4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1503119867
 GameObject:
   m_ObjectHideFlags: 0

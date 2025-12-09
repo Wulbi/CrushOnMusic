@@ -1,4 +1,5 @@
-using System;
+        using System;
+using System.Collections;
 using GameLogic.Enum;
 using GameLogic.Manager;
 using UnityEngine;
@@ -41,6 +42,9 @@ public class LogoPanel : BasePanel
     {
         base.OnEnter(datas);
 
+        // Close MainPanel if it exists and is open (important after reset)
+        CloseMainPanelIfOpen();
+
         SoundManager.Instance.PlayMusic(CommonSounds.GetClip(MusicType.INTRO));
         
         this.gameObject.SetActive(true);
@@ -50,11 +54,36 @@ public class LogoPanel : BasePanel
         //유저 데이터 로드.
         SetData();
     }
+    
+    private void CloseMainPanelIfOpen()
+    {
+        try
+        {
+            var mainPanel = UIManager.Instance.GetPanel(UIPanelType.MAIN_PANEL);
+            if (mainPanel != null && mainPanel.gameObject != null && mainPanel.gameObject.activeSelf)
+            {
+                mainPanel.gameObject.SetActive(false);
+            }
+        }
+        catch
+        {
+            // MainPanel might not exist yet, ignore
+        }
+    }
 
     public void SetData()
     {
         //유저 데이터를 불러온다.
+        StartCoroutine(SetDataCoroutine());
+    }
+    
+    private IEnumerator SetDataCoroutine()
+    {
+        //유저 데이터를 불러온다.
         UserSettings.Init();
+        
+        // Wait a frame to ensure Init completes (since it's async void, we can't await it directly)
+        yield return null;
         
         GlobalManager.Instance.LoadData();
         

@@ -22,8 +22,7 @@ public class AssistContainer : MonoBehaviour
     public Image buttonMuteImage;
 
     public int order;
-    public int level = 0;
-    public int grade = 0;
+    public bool isUpgraded = false;
 
     public MainPanel mainPanel;
     
@@ -37,13 +36,6 @@ public class AssistContainer : MonoBehaviour
 
     public UpgradeDB.AssistUpgradeData Data 
         => DatabaseManager.Instance.upgradeDB.assistDataList[order];
-
-    public bool CanBeUpgradeGrade()
-    {
-        if (Data.gradeDataList == null) return false;
-        if (Data.gradeDataList.Count <= grade) return false;
-        return level >= Data.gradeDataList[grade].needLevel && Data.gradeDataList[grade].needLevel > 0;
-    }
 
     void Start()
     {
@@ -64,8 +56,8 @@ public class AssistContainer : MonoBehaviour
         SetData();
         ApplyVisuals(force:true);
         
-        // Start loop playback if level > 0
-        if (level > 0)
+        // Start loop playback if upgraded
+        if (isUpgraded)
         {
             StartLoopPlaybackIfNeeded();
         }
@@ -83,18 +75,17 @@ public class AssistContainer : MonoBehaviour
     {
         var gm = GlobalManager.Instance;
 
-        bool affordable = gm.likesAmount >= gm.GetAssistUpgradeCost(order, level, grade);
-        bool canGradeUp = CanBeUpgradeGrade();
+        bool affordable = !isUpgraded && gm.likesAmount >= gm.GetAssistUpgradeCost(order);
 
         // 버튼 색상 통일 적용
-        UIThemeUtil.SetUpgradeButtonVisual(buttonImage, affordable, canGradeUp);
+        UIThemeUtil.SetUpgradeButtonVisual(buttonImage, affordable, false);
 
         // 버튼 상호작용은 색과 별개로 명확히
         if (buttonUpgrade && buttonUpgrade.interactable != affordable)
             buttonUpgrade.interactable = affordable;
 
-        // 레벨 라벨
-        var newLevelText = canGradeUp ? "Upgrade" : $"Lv.{level}";
+        // 레벨 라벨 - show "Upgrade" if not upgraded, hide if upgraded
+        var newLevelText = isUpgraded ? "" : "Upgrade";
         if (labelLevel.text != newLevelText) labelLevel.text = newLevelText;
     }
 
@@ -102,20 +93,29 @@ public class AssistContainer : MonoBehaviour
     {
         Icon.sprite     = Data.icon;
         labelName.text  = Data.Name;
-        labelDesc.text  = $"{GlobalManager.Instance.GetAssistAmount(order, level)} Likes /s";
-        labelCost.text  = $"+{GlobalManager.Instance.GetAssistUpgradeCost(order, level, grade)}";
+        
+        if (isUpgraded)
+        {
+            labelDesc.text  = $"{GlobalManager.Instance.GetAssistAmount(order)} Likes /s";
+            labelCost.text  = ""; // No cost if already upgraded
+        }
+        else
+        {
+            labelDesc.text  = "0 Likes /s";
+            labelCost.text  = $"+{GlobalManager.Instance.GetAssistUpgradeCost(order)}";
+        }
         
         // Set up audio clip for this assist container
-        SetAudioClip(order, level, grade);
+        SetAudioClip(order);
         
-        // Stop playback if level is 0
-        if (level <= 0)
+        // Stop playback if not upgraded
+        if (!isUpgraded)
         {
             StopLoopPlayback();
         }
     }
     
-    public void SetAudioClip(int order, int level, int grade)
+    public void SetAudioClip(int order)
     {
         // Initialize AudioSource if needed
         if (audioSource == null)
@@ -125,38 +125,37 @@ public class AssistContainer : MonoBehaviour
                 audioSource = gameObject.AddComponent<AudioSource>();
         }
         
-        if (loopClipTypes == null || loopClipTypes.Length == 0)
+        // Get audio clip directly from UpgradeDB
+        AudioClip clip = null;
+        if (Data != null && Data.loopClips != null && Data.loopClips.Count > 0)
         {
-            Debug.LogWarning($"[AssistContainer] loopClipTypes 배열이 설정되지 않았습니다. Unity Inspector에서 설정해주세요.");
-            return;
+            // Use first clip (index 0) by default
+            clip = Data.loopClips[0];
         }
         
-        if (order >= 0 && order < loopClipTypes.Length)
+        // Fallback to loopClipTypes array if UpgradeDB doesn't have clips (backward compatibility)
+        // Note: Can't use CommonSounds anymore since loop clips are removed from it
+        if (clip == null && loopClipTypes != null && loopClipTypes.Length > 0 && order >= 0 && order < loopClipTypes.Length)
         {
-            LoopClipType type = loopClipTypes[order];
-            AudioClip clip = CommonSounds.GetClip(type, grade);
+            Debug.LogWarning($"[AssistContainer] UpgradeDB에 loopClips가 없습니다. order: {order}, UpgradeDB에 loopClips를 설정해주세요.");
+        }
 
-            if (clip != null && level > 0)
-            {
-                audioSource.clip = clip;
-            }
-            else
-            {
-                // Clear the audio clip when level is 0 or clip is null
-                audioSource.clip = null;
-                if (level <= 0)
-                {
-                    Debug.Log($"[AssistContainer] 레벨이 0입니다. order: {order}");
-                }
-                else
-                {
-                    Debug.LogWarning($"[AssistContainer] 음악 클립이 존재하지 않습니다. LoopClipType: {type}, Grade: {grade}");
-                }
-            }
+        if (clip != null && isUpgraded)
+        {
+            audioSource.clip = clip;
         }
         else
         {
-            Debug.LogError($"[AssistContainer] order 인덱스가 loopClipTypes 범위를 벗어났습니다. order: {order}, 배열 길이: {loopClipTypes.Length}");
+            // Clear the audio clip when not upgraded or clip is null
+            audioSource.clip = null;
+            if (!isUpgraded)
+            {
+                Debug.Log($"[AssistContainer] 컨테이너가 업그레이드되지 않았습니다. order: {order}");
+            }
+            else
+            {
+                Debug.LogWarning($"[AssistContainer] 음악 클립이 존재하지 않습니다. order: {order}, UpgradeDB에 loopClips를 설정해주세요.");
+            }
         }
     }
     
@@ -179,8 +178,8 @@ public class AssistContainer : MonoBehaviour
     
     public void StartLoopPlayback()
     {
-        // Only start playback if level > 0 and we have a valid clip
-        if (audioSource != null && audioSource.clip != null && level > 0)
+        // Only start playback if upgraded and we have a valid clip
+        if (audioSource != null && audioSource.clip != null && isUpgraded)
         {
             audioSource.loop = true; // Set to loop for continuous playback
             if (!audioSource.isPlaying)
@@ -188,9 +187,9 @@ public class AssistContainer : MonoBehaviour
                 audioSource.Play();
             }
         }
-        else if (level <= 0)
+        else if (!isUpgraded)
         {
-            // Stop playback if level is 0 or below
+            // Stop playback if not upgraded
             StopLoopPlayback();
         }
     }
@@ -198,7 +197,7 @@ public class AssistContainer : MonoBehaviour
     public void StartLoopPlaybackIfNeeded()
     {
         // Only start if not already playing and conditions are met
-        if (audioSource != null && audioSource.clip != null && level > 0 && !audioSource.isPlaying)
+        if (audioSource != null && audioSource.clip != null && isUpgraded && !audioSource.isPlaying)
         {
             audioSource.loop = true;
             audioSource.Play();
@@ -224,7 +223,14 @@ public class AssistContainer : MonoBehaviour
     public void OnClickedUpgrade()
     {
         var gm = GlobalManager.Instance;
-        BigDouble cost = gm.GetAssistUpgradeCost(order, level, grade);
+        
+        // Don't allow upgrading if already upgraded
+        if (isUpgraded)
+        {
+            return;
+        }
+        
+        BigDouble cost = gm.GetAssistUpgradeCost(order);
 
         if (gm.likesAmount < cost)
         {
@@ -234,16 +240,14 @@ public class AssistContainer : MonoBehaviour
 
         gm.likesAmount -= cost;
 
-        if (CanBeUpgradeGrade())
-        {
-            grade += 1;
-            gm.assistClickLevelList[order].grade = grade;
-        }
-        else
-        {
-            level += 1;
-            gm.assistClickLevelList[order].level = level;
-        }
+        // Mark this container as upgraded
+        isUpgraded = true;
+        gm.assistClickLevelList[order].isUpgraded = true;
+        
+        // Update assist state bools when upgraded
+        gm.UpdateAssistStates();
+        
+        // Note: The next container will be opened (made visible) by GetActiveAssistCount() logic
 
         SetData();
         mainPanel.SetContainers();
@@ -251,6 +255,9 @@ public class AssistContainer : MonoBehaviour
 
         // 업그레이드 직후 색/문구 최신화
         ApplyVisuals(force:true);
+        
+        // Save data immediately after upgrade to persist changes
+        GlobalManager.Instance.SaveData();
     }
 
     public void SetMuteState(bool muted)

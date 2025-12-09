@@ -17,43 +17,58 @@ MonoBehaviour:
     Name: Touch Upgrade
   assistDataList:
   - icon: {fileID: 7699978436774145253, guid: db86955e78c789f42bba22fc06d728c5, type: 3}
-    Name: Drum
-    musicianIcon: {fileID: -5672080810483179564, guid: 8305ff63ef65b684ea041bab2f9866a3, type: 3}
-    gradeDataList:
-    - needLevel: 4
-      increaseUpgradeCost: 2
-      musicianIcon: {fileID: 0}
-    - needLevel: 8
-      increaseUpgradeCost: 3
-      musicianIcon: {fileID: 0}
-  - icon: {fileID: 425828937590990995, guid: 7cff5ce6962b2c74a99bd5e2bb265f32, type: 3}
-    Name: Bass
-    musicianIcon: {fileID: 425828937590990995, guid: 7cff5ce6962b2c74a99bd5e2bb265f32, type: 3}
+    Name: Moon
     gradeDataList: []
-  - icon: {fileID: -1743848117925008471, guid: 5e0af0627fcc98447bc72e35df7f9261, type: 3}
-    Name: Guitar
-    musicianIcon: {fileID: -1743848117925008471, guid: 5e0af0627fcc98447bc72e35df7f9261, type: 3}
+    loopClipType: 0
+    loopClips:
+    - {fileID: 8300000, guid: b3ddb33e3f8c8fa4296080a441588cbd, type: 3}
+  - icon: {fileID: 8149009158662877648, guid: 8fd88a91f1c98404181867f03db918c0, type: 3}
+    Name: Asteroid
     gradeDataList: []
-  - icon: {fileID: 1081719652503151641, guid: 9f38a5198db1d2548adbfedd984ba74a, type: 3}
-    Name: Guitar2
-    musicianIcon: {fileID: 1081719652503151641, guid: 9f38a5198db1d2548adbfedd984ba74a, type: 3}
+    loopClipType: 1
+    loopClips:
+    - {fileID: 8300000, guid: f5c565ac7085b9c419edd0802317e581, type: 3}
+  - icon: {fileID: -1285735358615749843, guid: 9cebb83fc1457eb4092e8700d34e8ec7, type: 3}
+    Name: ElecMan
     gradeDataList: []
-  - icon: {fileID: 5593836938073143554, guid: a87d89437cc8fd64184acf40ba46fad0, type: 3}
-    Name: Piano
-    musicianIcon: {fileID: 5593836938073143554, guid: a87d89437cc8fd64184acf40ba46fad0, type: 3}
+    loopClipType: 2
+    loopClips:
+    - {fileID: 8300000, guid: d220fa92ee074c84a8562525fa051879, type: 3}
+  - icon: {fileID: -6250791675226243023, guid: 7fc30fdd2f518a945894e8e3a923075a, type: 3}
+    Name: AcousticMan
+    gradeDataList: []
+    loopClipType: 3
+    loopClips:
+    - {fileID: 8300000, guid: fa5e033e1f95aaf4f8cac17656586b17, type: 3}
+  - icon: {fileID: -8541936030981981254, guid: f386411b82238d34cb320ca2d4854e01, type: 3}
+    Name: Satellite
     gradeDataList:
     - needLevel: 1
       increaseUpgradeCost: 10
-      musicianIcon: {fileID: 0}
-  - icon: {fileID: -967158057364200739, guid: cea7ed320b6aed44bb40d3e4ad7c0739, type: 3}
-    Name: Choir
-    musicianIcon: {fileID: -967158057364200739, guid: cea7ed320b6aed44bb40d3e4ad7c0739, type: 3}
+    loopClipType: 6
+    loopClips:
+    - {fileID: 8300000, guid: f27f1b848ce86ff428c6516ee1de94c4, type: 3}
+  - icon: {fileID: 1464717800196232220, guid: 5c6c5853649cc944aa10f63c2542f627, type: 3}
+    Name: Stardust
     gradeDataList: []
-  - icon: {fileID: 6065103611855083091, guid: 6cd4e81fa1676aa4aa71f99bc4c5367b, type: 3}
-    Name: Flute
-    musicianIcon: {fileID: 6065103611855083091, guid: 6cd4e81fa1676aa4aa71f99bc4c5367b, type: 3}
+    loopClipType: 5
+    loopClips:
+    - {fileID: 8300000, guid: c95a9b2a46d566b47a421637b25ab83b, type: 3}
+  - icon: {fileID: -5482475815784508678, guid: 4bfccc84c78f9564d861f57d4d3ebe12, type: 3}
+    Name: Comet
     gradeDataList: []
-  - icon: {fileID: 5039017300036666153, guid: 9b61e4d7d04eb3a418e356b928c1e28f, type: 3}
-    Name: Keyboard
-    musicianIcon: {fileID: 5039017300036666153, guid: 9b61e4d7d04eb3a418e356b928c1e28f, type: 3}
+    loopClipType: 7
+    loopClips:
+    - {fileID: 8300000, guid: 51d19706a125f2f46839f55981b0184a, type: 3}
+  - icon: {fileID: 5524964102268068530, guid: 520cf39d1f7823b41a5cc58bcb1e0c11, type: 3}
+    Name: BeepSatellite
     gradeDataList: []
+    loopClipType: 4
+    loopClips:
+    - {fileID: 8300000, guid: a799654318b26204c93d695c5e2dfe83, type: 3}
+  - icon: {fileID: 3512806799387003815, guid: e378bca281c07a24c8b8726239f2221d, type: 3}
+    Name: Satellite2
+    gradeDataList: []
+    loopClipType: 8
+    loopClips:
+    - {fileID: 8300000, guid: 756d03e62967f9f429e2295ffb7e5143, type: 3}

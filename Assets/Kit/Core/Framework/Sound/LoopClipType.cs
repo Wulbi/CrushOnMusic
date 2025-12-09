@@ -10,5 +10,6 @@ namespace GameLogic.Enum
         CHOIR,
         PIANO,
         FLUTE,
+        PIANO2,
     }
 }
