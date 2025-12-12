@@ -234,6 +234,7 @@ public class GlobalManager : SingletonBehaviour<GlobalManager>
     public BigDouble GetTouchAmount()
     {
         BigDouble amt = clickLevel + 1;
+       //return amt;
         return IsFever ? amt * 2 : amt;
     }
 
