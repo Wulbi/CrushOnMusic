@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
-#if !UNITY_EDITOR
+#if GOOGLE_MOBILE_ADS && !UNITY_EDITOR
 using GoogleMobileAds.Api;
 using GoogleMobileAds.Api.Mediation;
 #endif
@@ -33,9 +33,8 @@ public class VideoAdsManager : SingletonBehaviour<VideoAdsManager>
     public static string adUnitId               = "unused";
 #endif
 
-#if !UNITY_EDITOR
+#if GOOGLE_MOBILE_ADS && !UNITY_EDITOR
      private RewardedAd  rewardedAd = null;
-  
 #endif
 
     /// <summary>
@@ -43,11 +42,13 @@ public class VideoAdsManager : SingletonBehaviour<VideoAdsManager>
     /// </summary>
     public void Initialize()
     {
-#if !UNITY_EDITOR
+#if GOOGLE_MOBILE_ADS && !UNITY_EDITOR
         MobileAds.Initialize(initStatus =>
         {
             LoadAd();
         });
+#else
+        Debug.LogWarning("Google Mobile Ads SDK not present; rewarded ads disabled.");
 #endif
     }
     /// <summary>
@@ -55,7 +56,7 @@ public class VideoAdsManager : SingletonBehaviour<VideoAdsManager>
     /// </summary>
      public void LoadAd()
      {
-#if !UNITY_EDITOR
+#if GOOGLE_MOBILE_ADS && !UNITY_EDITOR
          // Clean up the old ad before loading a new one.
          if (rewardedAd != null)
          {
@@ -88,6 +89,8 @@ public class VideoAdsManager : SingletonBehaviour<VideoAdsManager>
                  RegisterEventHandlers(ad);
                  RegisterReloadHandler(ad);
              });
+#else
+         Debug.LogWarning("LoadAd called but Google Mobile Ads SDK is missing.");
 #endif
      }
 
@@ -96,7 +99,7 @@ public class VideoAdsManager : SingletonBehaviour<VideoAdsManager>
     /// </summary>
      public void ShowAd()
      {
-#if !UNITY_EDITOR
+#if GOOGLE_MOBILE_ADS && !UNITY_EDITOR
 
          const string rewardMsg =
              "Rewarded ad rewarded the user. Type: {0}, amount: {1}.";
@@ -113,13 +116,15 @@ public class VideoAdsManager : SingletonBehaviour<VideoAdsManager>
              });
          }
 #else
+         // In the editor or when the Mobile Ads SDK is not installed, immediately
+         // invoke the completion callback to keep game flow moving.
          if (OnVideoAdsFinished != null)
              OnVideoAdsFinished();
 #endif
      }
 
     
-#if !UNITY_EDITOR
+#if GOOGLE_MOBILE_ADS && !UNITY_EDITOR
     /// <summary>
     /// 광고 이벤트 연결 함수
     /// </summary>

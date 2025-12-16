@@ -72,3 +72,69 @@ MonoBehaviour:
     loopClipType: 8
     loopClips:
     - {fileID: 8300000, guid: 756d03e62967f9f429e2295ffb7e5143, type: 3}
+  - icon: {fileID: -3255675412826023817, guid: 7c1bf02b99790094b97d0caa9e3c8d2a, type: 3}
+    Name: NewMoon
+    gradeDataList: []
+    loopClipType: 9
+    loopClips:
+    - {fileID: 8300000, guid: fea90a8c0d6db784699cf12144a9a1ec, type: 3}
+  - icon: {fileID: -1340052873446996437, guid: daec79c9528fac340b6a9cc4a178dd42, type: 3}
+    Name: SpaceDebris
+    gradeDataList: []
+    loopClipType: 10
+    loopClips:
+    - {fileID: 8300000, guid: 24015011bdbd1e54b8668944d90b173f, type: 3}
+  - icon: {fileID: 3097984222739512366, guid: e22b778975bedd3448711f4999a15cbf, type: 3}
+    Name: SpaceDebris2
+    gradeDataList: []
+    loopClipType: 11
+    loopClips:
+    - {fileID: 8300000, guid: 3a8bfa91d297f0b48b7c0f0b4ebf3380, type: 3}
+  - icon: {fileID: -8650570563361338126, guid: a8f29e2ab0af9e948b36bad78ed28e3a, type: 3}
+    Name: NewMoon2
+    gradeDataList: []
+    loopClipType: 12
+    loopClips:
+    - {fileID: 8300000, guid: 71d35195d3c7db349aefe41178cf992f, type: 3}
+  - icon: {fileID: 3259723651555973810, guid: e3013ae65b19a7347a4887514343a0b1, type: 3}
+    Name: GuitarAlien
+    gradeDataList: []
+    loopClipType: 13
+    loopClips:
+    - {fileID: 8300000, guid: 02f158608f42e9143a46436ccf84ce5f, type: 3}
+  - icon: {fileID: 3881368040766189768, guid: 4859f2c3dc94e91449bb624f7fa388bf, type: 3}
+    Name: GuitarAlien2
+    gradeDataList: []
+    loopClipType: 14
+    loopClips:
+    - {fileID: 8300000, guid: 367cfdcdc1987ac40bc359c23b2a244a, type: 3}
+  - icon: {fileID: 3901333750411442158, guid: ac053e050b917fb4389e8c8b03f2a185, type: 3}
+    Name: U.F.O.
+    gradeDataList: []
+    loopClipType: 15
+    loopClips:
+    - {fileID: 8300000, guid: 8e70486133bdffc448cf6b46db298830, type: 3}
+  - icon: {fileID: 7690872008913833757, guid: 27a2f7f0dbaddce489f0c37b55d4ef9a, type: 3}
+    Name: AstroVocal
+    gradeDataList: []
+    loopClipType: 16
+    loopClips:
+    - {fileID: 8300000, guid: e54192bb541e6de41a3d4d65f7b59593, type: 3}
+  - icon: {fileID: -6143282364813876972, guid: 5d13379a9aba81946b82699cfc9fb064, type: 3}
+    Name: SpaceSnail
+    gradeDataList: []
+    loopClipType: 17
+    loopClips:
+    - {fileID: 8300000, guid: 2dd2e8dd4a2d1b04ebcdc523e4b9a093, type: 3}
+  - icon: {fileID: 9058543162548721014, guid: f035744ca182f984c850340a3a332658, type: 3}
+    Name: SpaceWhale
+    gradeDataList: []
+    loopClipType: 18
+    loopClips:
+    - {fileID: 8300000, guid: ae1fa18443e604a408be8e2790c2125c, type: 3}
+  - icon: {fileID: -452945875866276091, guid: 2a47ae3551ee4914e9cfc8ae59ab3784, type: 3}
+    Name: DarkStardust
+    gradeDataList: []
+    loopClipType: 19
+    loopClips:
+    - {fileID: 8300000, guid: d972679e8766d8748ade3fcf1207b0f5, type: 3}

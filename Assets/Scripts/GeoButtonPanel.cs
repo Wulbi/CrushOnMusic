@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using GameLogic.Enum;
+using GameLogic.Manager;
 
 /// <summary>
 /// Dynamically generates GeoMusicButton prefabs based on GlobalManager.activeLoopTypes
@@ -25,6 +26,30 @@ public class GeoButtonPanel : MonoBehaviour
     
     private void OnEnable()
     {
+        // Listen for assist upgrade events to refresh buttons
+        if (EventManager.HasInstance)
+        {
+            EventManager.Instance.AddListener<AssistContainer>(GameProgressEventType.ASSIST_VIEW_UPGRADE, OnAssistUpgraded);
+        }
+        
+        RefreshButtons();
+    }
+    
+    private void OnDisable()
+    {
+        // Remove event listener when disabled
+        if (EventManager.HasInstance)
+        {
+            EventManager.Instance.RemoveListener<AssistContainer>(GameProgressEventType.ASSIST_VIEW_UPGRADE, OnAssistUpgraded);
+        }
+    }
+    
+    /// <summary>
+    /// Called when an assist container is upgraded - refreshes buttons to show new active types
+    /// </summary>
+    private void OnAssistUpgraded(AssistContainer container)
+    {
+        // Refresh buttons when a new assist is upgraded to show the new button
         RefreshButtons();
     }
     
@@ -83,6 +108,15 @@ public class GeoButtonPanel : MonoBehaviour
             foreach (LoopClipType type in spawnOrder)
             {
                 if (active.Contains(type))
+                {
+                    typesToSpawn.Add(type);
+                }
+            }
+
+            // Append any newly added active types that are not yet in spawnOrder
+            foreach (LoopClipType type in active)
+            {
+                if (!typesToSpawn.Contains(type))
                 {
                     typesToSpawn.Add(type);
                 }

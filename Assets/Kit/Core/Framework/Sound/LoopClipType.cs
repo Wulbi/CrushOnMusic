@@ -11,5 +11,16 @@ namespace GameLogic.Enum
         PIANO,
         FLUTE,
         PIANO2,
+        TRAPDRUM,
+        BELL,
+        BELL2,
+        TRAPDRUM2,
+        GUITAR3,
+        GUITAR4,
+        KEYBOARD2,
+        VOCAL,
+        SYNTH,
+        TRAPVOCAL,
+        BELL3,
     }
 }

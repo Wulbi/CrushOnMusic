@@ -20,13 +20,13 @@ MonoBehaviour:
     rgba: 4280948495
   textSub:
     serializedVersion: 2
-    rgba: 4289700764
+    rgba: 4280948495
   primary:
     serializedVersion: 2
     rgba: 4294345275
   success:
     serializedVersion: 2
-    rgba: 4279661561
+    rgba: 4294941606
   warning:
     serializedVersion: 2
     rgba: 4279618810

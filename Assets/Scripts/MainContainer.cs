@@ -73,8 +73,8 @@ public class MainContainer : MonoBehaviour
         if (Icon) Icon.sprite = db.mainData.icon;
         if (labelName)  labelName.text  = db.mainData.Name;
         if (labelDesc)  labelDesc.text  = $"{gm.GetTouchAmount()} Likes /touch";
-        if (labelLevel) labelLevel.text = ""; // Remove level display
-        if (labelCost)  labelCost.text  = $"+{gm.GetUpgradeCost()}";
+        if (labelLevel) labelLevel.text = "Needs"; 
+        if (labelCost)  labelCost.text  = $"{gm.GetUpgradeCost()}";
     }
 
     public void OnClickedUpgrade()

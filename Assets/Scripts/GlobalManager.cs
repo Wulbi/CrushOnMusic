@@ -41,20 +41,6 @@ public class GlobalManager : SingletonBehaviour<GlobalManager>
     public HashSet<LoopClipType> activeLoopTypes = new HashSet<LoopClipType>();
 
     /// <summary>
-    /// Assist container state bools - tracks which assists are on (awake and upgraded)
-    /// These are derived from activeLoopTypes for backward compatibility
-    /// </summary>
-    public bool isDrumOn = false;
-    public bool isBassOn = false;
-    public bool isGuitarOn = false;
-    public bool isGuitar2On = false;
-    public bool isPianoOn = false;
-    public bool isChoirOn = false;
-    public bool isFluteOn = false;
-    public bool isKeyboardOn = false;
-    public bool isPiano2On = false;
-
-    /// <summary>
     /// 피버 상태 체크 - 게임 내 피버 모드 활성화 여부를 나타냅니다.
     /// </summary>
     public bool IsFever = false;
@@ -249,7 +235,7 @@ public class GlobalManager : SingletonBehaviour<GlobalManager>
 
     public BigDouble GetAssistUpgradeCost(int order)
     {
-        BigDouble baseCost = 10 * BigDouble.Pow(2, order + 1);
+        BigDouble baseCost = 10 * BigDouble.Pow(1.5f, order + 1);
         return BigDouble.Round(baseCost);
     }
 
@@ -279,8 +265,6 @@ public class GlobalManager : SingletonBehaviour<GlobalManager>
         if (DatabaseManager.Instance == null || DatabaseManager.Instance.upgradeDB == null || 
             DatabaseManager.Instance.upgradeDB.assistDataList == null)
         {
-            // Reset boolean fields when database is unavailable
-            UpdateBooleanFieldsFromActiveLoops();
             return;
         }
 
@@ -307,24 +291,5 @@ public class GlobalManager : SingletonBehaviour<GlobalManager>
                 activeLoopTypes.Add(loopType);
             }
         }
-        
-        // Update boolean fields from activeLoopTypes for backward compatibility
-        UpdateBooleanFieldsFromActiveLoops();
-    }
-
-    /// <summary>
-    /// Updates the legacy boolean fields from activeLoopTypes for backward compatibility
-    /// </summary>
-    private void UpdateBooleanFieldsFromActiveLoops()
-    {
-        isDrumOn = activeLoopTypes.Contains(LoopClipType.DRUM);
-        isBassOn = activeLoopTypes.Contains(LoopClipType.BASS);
-        isGuitarOn = activeLoopTypes.Contains(LoopClipType.GUITAR1);
-        isGuitar2On = activeLoopTypes.Contains(LoopClipType.GUITAR2);
-        isPianoOn = activeLoopTypes.Contains(LoopClipType.PIANO);
-        isChoirOn = activeLoopTypes.Contains(LoopClipType.CHOIR);
-        isFluteOn = activeLoopTypes.Contains(LoopClipType.FLUTE);
-        isKeyboardOn = activeLoopTypes.Contains(LoopClipType.KEYBOARD);
-        isPiano2On = activeLoopTypes.Contains(LoopClipType.PIANO2);
     }
 }

@@ -278,8 +278,22 @@ public class MainPanel : BasePanel
         }
 
         int assistCount = GetActiveAssistCount();
+        
+        // Ensure we don't exceed database count
+        int databaseCount = DatabaseManager.Instance != null && DatabaseManager.Instance.upgradeDB != null 
+            ? DatabaseManager.Instance.upgradeDB.assistDataList.Count 
+            : 0;
+        assistCount = Mathf.Min(assistCount, databaseCount);
+        
         for (int i = 0; i < assistCount; i++)
         {
+            // Safety check: ensure we have data for this index
+            if (i >= GlobalManager.Instance.assistClickLevelList.Count)
+            {
+                Debug.LogWarning($"[MainPanel] assistClickLevelList doesn't have entry for index {i}. Skipping container creation.");
+                break;
+            }
+            
             var assistData = GlobalManager.Instance.assistClickLevelList[i];
 
             GameObject assistObj = Instantiate(assistPref, containerRoot);

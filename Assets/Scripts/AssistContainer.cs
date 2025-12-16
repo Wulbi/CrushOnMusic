@@ -35,7 +35,25 @@ public class AssistContainer : MonoBehaviour
     private const float UiTick = 0.15f;    // 매 프레임 갱신 대신 0.15초 주기
 
     public UpgradeDB.AssistUpgradeData Data 
-        => DatabaseManager.Instance.upgradeDB.assistDataList[order];
+    {
+        get
+        {
+            if (DatabaseManager.Instance == null || DatabaseManager.Instance.upgradeDB == null || 
+                DatabaseManager.Instance.upgradeDB.assistDataList == null)
+            {
+                Debug.LogError($"[AssistContainer] DatabaseManager or UpgradeDB not available for order {order}");
+                return null;
+            }
+            
+            if (order < 0 || order >= DatabaseManager.Instance.upgradeDB.assistDataList.Count)
+            {
+                Debug.LogError($"[AssistContainer] Order {order} is out of bounds. Database has {DatabaseManager.Instance.upgradeDB.assistDataList.Count} assists.");
+                return null;
+            }
+            
+            return DatabaseManager.Instance.upgradeDB.assistDataList[order];
+        }
+    }
 
     void Start()
     {
@@ -85,14 +103,21 @@ public class AssistContainer : MonoBehaviour
             buttonUpgrade.interactable = affordable;
 
         // 레벨 라벨 - show "Upgrade" if not upgraded, hide if upgraded
-        var newLevelText = isUpgraded ? "" : "Upgrade";
+        var newLevelText = isUpgraded ? "Complete" : "Upgrade";
         if (labelLevel.text != newLevelText) labelLevel.text = newLevelText;
     }
 
     public void SetData()
     {
-        Icon.sprite     = Data.icon;
-        labelName.text  = Data.Name;
+        var data = Data;
+        if (data == null)
+        {
+            Debug.LogError($"[AssistContainer] Cannot set data for order {order} - Data is null");
+            return;
+        }
+        
+        Icon.sprite     = data.icon;
+        labelName.text  = data.Name;
         
         if (isUpgraded)
         {
@@ -264,6 +289,12 @@ public class AssistContainer : MonoBehaviour
     {
         MuteMusic(muted);
         UIThemeUtil.SetMuteVisual(buttonMuteImage, muted);
+        
+        // Explicit color cue: red when muted, white when unmuted
+        if (buttonMuteImage != null)
+        {
+            buttonMuteImage.color = muted ? Color.red : Color.white;
+        }
     }
 
     public void OnClickMute()
