@@ -88,7 +88,7 @@ public class GeoMusicPanel : MonoBehaviour
     public void ManualTrigger()
     {
         TriggerMetronome();
-        timer = 0f; // Reset timer after manual trigger
+        timer = 0f; 
     }
     
     /// <summary>
